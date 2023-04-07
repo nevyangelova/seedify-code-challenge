@@ -1,6 +1,6 @@
 # Seedify Code Challenge
 
-Challenge: Build a simple decentralized voting application using React.js and Node.js with a smart contract already done
+Challenge: Build a simple decentralized voting application using React.js with a smart contract already done
 
 Description:
 Your task is to build a simple decentralized voting application that allows users to cast their votes without the need for a central authority. A smart contract has already been created and deployed on a testnet. You will need to integrate this smart contract into your application and build the frontend and backend components.
