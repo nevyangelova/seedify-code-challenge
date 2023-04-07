@@ -16,6 +16,7 @@ Bonus:
 
 1. Add support for multiple voting rounds.
 2. Add listener function that saves the vote, wallet and selected candidate to a database (can be a backend implementation, firebase or lowdb)
+   
    **Note: you need to change the smart contract to add Events**
 
 Note: You are free to use any libraries or frameworks you see fit to complete the challenge.
