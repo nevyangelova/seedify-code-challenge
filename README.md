@@ -19,3 +19,5 @@ Bonus:
    **Note: you need to change the smart contract to add Events**
 
 Note: You are free to use any libraries or frameworks you see fit to complete the challenge.
+
+Smart Contract deployed on sepolia network `0x9298B2E081E7F604028d75dF5d15155353612d4c`
