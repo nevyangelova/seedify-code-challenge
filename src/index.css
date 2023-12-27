@@ -2,8 +2,38 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+    font-family: 'PixeloidMono';
+    src: url('./assets/fonts/PixeloidMono.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'PixeloidSans';
+    src: url('./assets/fonts/PixeloidSans.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'PixeloidSansBold';
+    src: url('./assets/fonts/PixeloidSansBold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
 html {
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+    font-family: 'PixeloidSans', sans-serif;
+    color-scheme: light dark;
+    color: rgba(255, 255, 255, 0.87);
+    background-color: #040414;
+
+    --light-pink: #eb26ff;
+    --dark-pink: #8f1a9a;
+    --light-purple: #4d44cd;
+    --dark-purple: #433aae;
+    --shadow-purple: #262264;
+    --light-blue: #06fdff;
+    --dark-blue: rgba(16, 19, 39, 0.89);
 }
