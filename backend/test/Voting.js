@@ -1,5 +1,4 @@
-const {expect} = require('chai');
-const utils = require('ethers').utils;
+import {expect} from 'chai';
 
 describe('Voting Contract', function () {
     let Voting;
