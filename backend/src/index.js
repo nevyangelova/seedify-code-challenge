@@ -1,7 +1,7 @@
 import express from 'express';
 import {ethers} from 'ethers';
-import {LowSync, JSONFileSync} from 'lowdb';
-import contractData from '../contracts/voting.json';
+import {JSONFilePreset} from 'lowdb/node';
+import contractData from '../contracts/voting.json' assert {type: 'json'};
 
 const app = express();
 app.use(express.json());
@@ -16,24 +16,25 @@ const votingContract = new ethers.Contract(
     provider
 );
 
-const adapter = new JSONFileSync('db.json');
-const db = new LowSync(adapter);
-db.read();
-db.data ||= {votes: []};
-db.write();
+const defaultData = {votes: []};
+const db = await JSONFilePreset('db.json', defaultData);
 
-votingContract.on('VoteCast', (round, voter, candidateId, voteCount) => {
+app.post('/vote-cast', (req, res) => {
+    const {round, voter, candidateId, voteCount} = req.body;
     console.log(
         `Vote cast in round ${round} by ${voter} for candidate ${candidateId}`
     );
 
-    db.data.votes.push({
-        round: round.toString(),
-        voter,
-        candidateId: candidateId.toString(),
-        voteCount: voteCount.toString(),
+    db.update(({votes}) => {
+        votes.push({
+            round: round.toString(),
+            voter,
+            candidateId: candidateId.toString(),
+            voteCount: voteCount.toString(),
+        });
     });
-    db.write();
+    console.log('Updated Database Entry:', db.data);
+    res.status(200).json({message: 'Vote cast successfully'});
 });
 
 const PORT = 3001;
