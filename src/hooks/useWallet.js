@@ -9,6 +9,23 @@ export const useWallet = () => {
 
     const SEPOLIA_CHAIN_ID = '0xaa36a7';
 
+    const initializeWeb3 = () => {
+        const web3Instance = new Web3(window.ethereum);
+        setWeb3(web3Instance);
+        return web3Instance;
+    };
+
+    const requestAccountAccess = async (web3Instance) => {
+        // good thing i checked this otherwise newly connected accounts wouldn't get requested
+        const accounts = await web3Instance.eth.requestAccounts();
+        if (accounts.length === 0) {
+            throw new Error(
+                'No accounts found. Please ensure MetaMask is connected.'
+            );
+        }
+        setAccounts(accounts);
+    };
+
     const switchToSepolia = async (web3Instance) => {
         try {
             await web3Instance.currentProvider.request({
@@ -17,27 +34,25 @@ export const useWallet = () => {
             });
             setIsCorrectNetwork(true);
         } catch (switchError) {
-            setError('Could not switch to Sepolia:', switchError);
+            setError(`Could not switch to Sepolia: ${switchError.message}`);
             setIsCorrectNetwork(false);
         }
     };
 
     const connectWallet = async () => {
-        if (window.ethereum) {
-            try {
-                const web3Instance = new Web3(window.ethereum);
-                setWeb3(web3Instance);
-
-                const accounts = await web3Instance.eth.getAccounts();
-                setAccounts(accounts);
-
-                switchToSepolia(web3Instance);
-            } catch (error) {
-                setError(`Connection error: ${error.message}`);
-                setIsCorrectNetwork(false);
-            }
-        } else {
+        if (!window.ethereum) {
             setError('Please install MetaMask!');
+            setIsCorrectNetwork(false);
+            return;
+        }
+
+        try {
+            const web3Instance = initializeWeb3();
+            await requestAccountAccess(web3Instance);
+            await switchToSepolia(web3Instance);
+            setError('');
+        } catch (error) {
+            setError(`Connection error: ${error.message}`);
             setIsCorrectNetwork(false);
         }
     };
@@ -45,25 +60,23 @@ export const useWallet = () => {
     const logout = () => {
         setAccounts([]);
         setIsCorrectNetwork(false);
+        setWeb3(null);
     };
 
     useEffect(() => {
-        connectWallet();
-
         if (window.ethereum) {
-            const handleAccountsChanged = (accounts) => {
-                // Update accounts state when the MetaMask accounts change
-                if (accounts.length === 0) {
+            const handleAccountsChanged = (newAccounts) => {
+                if (newAccounts.length === 0) {
                     setError('Please connect to MetaMask.');
                     setAccounts([]);
                 } else {
-                    setAccounts(accounts);
+                    setAccounts(newAccounts);
+                    setError('');
                 }
             };
 
             window.ethereum.on('accountsChanged', handleAccountsChanged);
 
-            // Cleanup function to remove listener
             return () =>
                 window.ethereum.removeListener(
                     'accountsChanged',

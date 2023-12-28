@@ -56,9 +56,10 @@ const CandidatesList = () => {
                     content: 'Vote cast successfully',
                 });
             } catch (err) {
+                console.log(err)
                 setMessage({
                     type: 'error',
-                    content: err.error.message || 'Failed to cast vote.',
+                    content: err.message || 'Failed to cast vote.',
                 });
             } finally {
                 setVotingStatus((prevStatus) => ({
