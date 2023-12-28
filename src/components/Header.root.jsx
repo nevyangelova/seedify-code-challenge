@@ -26,7 +26,8 @@ export const HeaderContainer = styled.header`
 export const Logo = styled.h1`
     font-size: 1.8em;
     margin: 0;
-    text-shadow: 0 0 10px var(--light-blue), 0 0 20px var(--light-pink), 0 0 40px #fff;
+    text-shadow: 0 0 10px var(--light-blue), 0 0 20px var(--light-pink),
+        0 0 40px #fff;
     animation: ${neonFlicker} 1.5s infinite alternate;
 `;
 
@@ -68,7 +69,9 @@ export const DropdownButton = styled.button`
     }
 `;
 
-export const DropdownContent = styled.div`
+export const DropdownContent = styled.div.withConfig({
+    shouldForwardProp: (prop) => !['show'].includes(prop),
+})`
     display: ${(props) => (props.show ? 'block' : 'none')};
     position: absolute;
     background-color: #222;
@@ -79,7 +82,9 @@ export const DropdownContent = styled.div`
     overflow: hidden;
 `;
 
-export const DropdownIcon = styled.span`
+export const DropdownIcon = styled.span.withConfig({
+    shouldForwardProp: (prop) => !['up'].includes(prop),
+})`
     margin-left: 10px;
     display: inline-block;
     transform: ${(props) => (props.up ? 'rotate(180deg)' : 'none')};

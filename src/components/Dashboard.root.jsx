@@ -31,7 +31,9 @@ const getActiveStyles = (active) => {
     `;
 };
 
-export const TabButton = styled.button`
+export const TabButton = styled.button.withConfig({
+    shouldForwardProp: (prop) => !['active'].includes(prop),
+})`
     padding: 10px 20px;
     border: 2px solid;
     cursor: pointer;
