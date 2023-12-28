@@ -17,7 +17,6 @@ export const useWallet = () => {
             });
             setIsCorrectNetwork(true);
         } catch (switchError) {
-            console.log(switchError);
             setError('Could not switch to Sepolia:', switchError);
             setIsCorrectNetwork(false);
         }
@@ -29,12 +28,12 @@ export const useWallet = () => {
                 const web3Instance = new Web3(window.ethereum);
                 setWeb3(web3Instance);
 
-                const accounts = await web3Instance.eth.requestAccounts();
+                const accounts = await web3Instance.eth.getAccounts();
                 setAccounts(accounts);
 
                 switchToSepolia(web3Instance);
             } catch (error) {
-                setError('User denied account access');
+                setError(`Connection error: ${error.message}`);
                 setIsCorrectNetwork(false);
             }
         } else {
@@ -50,6 +49,27 @@ export const useWallet = () => {
 
     useEffect(() => {
         connectWallet();
+
+        if (window.ethereum) {
+            const handleAccountsChanged = (accounts) => {
+                // Update accounts state when the MetaMask accounts change
+                if (accounts.length === 0) {
+                    setError('Please connect to MetaMask.');
+                    setAccounts([]);
+                } else {
+                    setAccounts(accounts);
+                }
+            };
+
+            window.ethereum.on('accountsChanged', handleAccountsChanged);
+
+            // Cleanup function to remove listener
+            return () =>
+                window.ethereum.removeListener(
+                    'accountsChanged',
+                    handleAccountsChanged
+                );
+        }
     }, []);
 
     return {web3, accounts, connectWallet, error, logout, isCorrectNetwork};

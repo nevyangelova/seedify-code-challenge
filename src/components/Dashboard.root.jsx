@@ -17,43 +17,44 @@ export const TabContainer = styled.div`
 
 const getActiveStyles = (active) => {
     if (active) {
-      return css`
-        color: var(--light-blue);
-        border-color: var(--light-purple);
-        box-shadow: 0 0 10px var(--light-purple);
-      `;
+        return css`
+            color: var(--light-blue);
+            border-color: var(--light-purple);
+            box-shadow: 0 0 10px var(--light-purple);
+        `;
     }
 
     return css`
-      background-color: transparent;
-      color: white;
-      border-color: transparent;
+        background-color: transparent;
+        color: white;
+        border-color: transparent;
     `;
-  };
-  
-  export const TabButton = styled.button`
+};
+
+export const TabButton = styled.button`
     padding: 10px 20px;
     border: 2px solid;
     cursor: pointer;
     font-size: 1em;
     margin-right: 10px;
-    transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+    transition: background-color 0.3s ease, color 0.3s ease,
+        box-shadow 0.3s ease;
     border-radius: 8px;
 
     &:hover {
         background-color: var(--shadow-purple);
         box-shadow: 0 0 15px var(--light-purple), 0 0 25px var(--light-purple);
     }
-  
-    ${({ active }) => getActiveStyles(active)}
-  `;
 
+    ${({active}) => getActiveStyles(active)}
+`;
 
 export const TabContent = styled.div`
     color: white;
     padding: 20px;
     border-radius: 8px;
     margin-top: 20px;
+    min-height: 100px;
 `;
 
 export const InfoText = styled.p`
@@ -66,12 +67,11 @@ export const InfoText = styled.p`
 `;
 
 export const TxLink = styled.a`
-    font-size: 0.6rem;
+    font-size: 0.8rem;
     text-decoration: underline;
     color: var(--light-pink);
     margin-bottom: 0.5rem;
 `;
-
 
 export const ErrorMessage = styled.p`
     color: #ff6b6b;

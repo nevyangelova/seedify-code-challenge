@@ -49,14 +49,16 @@ const Dashboard = () => {
     }, [web3, contract, accounts]);
 
     useEffect(() => {
+        const updateVoteTransactions = async () => {
+            try {
+                const transactions = await fetchVoteTransactions(accounts[0]);
+                setVoteTransactions(transactions);
+            } catch (error) {
+                setError('Error fetching vote transactions: ' + error.message);
+            }
+        };
         if (accounts.length > 0) {
-            fetchVoteTransactions(accounts[0])
-                .then((transactions) => {
-                    setVoteTransactions(transactions);
-                })
-                .catch((error) => {
-                    setError('Error fetching vote transactions:', error);
-                });
+            updateVoteTransactions();
         }
     }, [accounts, fetchVoteTransactions]);
 
@@ -94,7 +96,7 @@ const Dashboard = () => {
                                 ? 'You have voted in this round.'
                                 : 'You have not voted yet.'}
                         </InfoText>
-                        <ul>
+                        <ul style={{overflow: 'scroll'}}>
                             {voteTransactions.map((tx) => {
                                 const etherscanUrl = `${EtherscanBaseUrl}${tx.hash}`;
 
@@ -105,7 +107,7 @@ const Dashboard = () => {
                                             target='_blank'
                                             rel='noopener noreferrer'
                                         >
-                                            tx: {tx.hash}
+                                            {tx.hash}
                                         </TxLink>
                                     </li>
                                 );

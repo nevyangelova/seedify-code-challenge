@@ -76,7 +76,7 @@ const Header = () => {
                     )}
                 </div>
             ) : (
-                <WalletButton onClick={handleConnectWalletClick}>
+                <WalletButton aria-label="Connect Wallet" onClick={handleConnectWalletClick}>
                     Connect Wallet
                 </WalletButton>
             )}

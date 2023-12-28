@@ -26,7 +26,7 @@ export const HeaderContainer = styled.header`
 export const Logo = styled.h1`
     font-size: 1.8em;
     margin: 0;
-    text-shadow: 0 0 10px var(--light-blue), 0 0 20px (var--light-pink), 0 0 40px #fff;
+    text-shadow: 0 0 10px var(--light-blue), 0 0 20px var(--light-pink), 0 0 40px #fff;
     animation: ${neonFlicker} 1.5s infinite alternate;
 `;
 

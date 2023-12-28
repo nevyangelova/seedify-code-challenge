@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const CandidatesContainer = styled.div`
-    margin: 1rem auto;
+    margin: 1rem;
     background-color: var(--dark-blue);
     padding: 1rem;
     border-radius: 12px;
@@ -68,11 +68,7 @@ export const VoteCount = styled.span`
 `;
 
 export const VoteButton = styled.button`
-    background: linear-gradient(
-        45deg,
-        var(--dark-pink),
-        var(--light-blue)
-    );
+    background: linear-gradient(45deg, var(--dark-pink), var(--light-blue));
     color: white;
     padding: 0.5rem 1.5rem;
     border: none;
@@ -82,12 +78,13 @@ export const VoteButton = styled.button`
     transition: transform 0.2s, box-shadow 0.3s;
     &:hover {
         transform: scale(1.05);
-        box-shadow: 0 0 10px var(--light-blue), 0 0 20px var(--light-pink)
+        box-shadow: 0 0 10px var(--light-blue), 0 0 20px var(--light-pink);
     }
 `;
 
 export const MessageText = styled.div`
-    color: ${(props) => (props.type === 'error' ? '#dc3545' : 'var(--light-blue)')};
+    color: ${(props) =>
+        props.type === 'error' ? '#dc3545' : 'var(--light-blue)'};
     text-align: center;
     font-size: 1.5rem;
     margin-top: 2rem;

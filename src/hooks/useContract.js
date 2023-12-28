@@ -18,21 +18,34 @@ export const useContract = (web3, accounts) => {
 
     const fetchCandidates = useCallback(async () => {
         if (!contract) return [];
-        const candidatesCount = await contract.methods.candidatesCount().call();
-        const candidatesArray = [];
-        for (let i = 0; i < candidatesCount; i++) {
-            const candidate = await contract.methods.candidates(i).call();
-            candidatesArray.push(candidate);
+        try {
+            const candidatesCount = await contract.methods
+                .candidatesCount()
+                .call();
+            const candidatesArray = [];
+            for (let i = 0; i < candidatesCount; i++) {
+                const candidate = await contract.methods.candidates(i).call();
+                candidatesArray.push(candidate);
+            }
+            return candidatesArray;
+        } catch (error) {
+            throw error;
         }
-        return candidatesArray;
     }, [contract]);
 
     const castVote = useCallback(
         async (candidateId) => {
-            if (!contract || !accounts || accounts.length === 0) {
-                throw new Error('No contract or account available');
+            if (!contract) throw new Error('Contract not initialized');
+            if (!accounts || accounts.length === 0)
+                throw new Error('No account connected');
+
+            try {
+                await contract.methods
+                    .vote(candidateId)
+                    .send({from: accounts[0]});
+            } catch (error) {
+                throw error;
             }
-            await contract.methods.vote(candidateId).send({from: accounts[0]});
         },
         [contract, accounts]
     );
@@ -58,8 +71,7 @@ export const useContract = (web3, accounts) => {
                 tx.input.startsWith(voteMethodSignature)
             );
         } catch (error) {
-            console.error('Error fetching transaction history:', error);
-            return [];
+            throw error;
         }
     };
     return {contract, fetchCandidates, castVote, fetchVoteTransactions};

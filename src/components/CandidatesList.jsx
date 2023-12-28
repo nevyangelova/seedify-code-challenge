@@ -23,7 +23,7 @@ const CandidatesList = () => {
     } = useContext(Web3Context);
     const [candidates, setCandidates] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [voting, setVoting] = useState(false);
+    const [votingStatus, setVotingStatus] = useState({});
 
     const refreshCandidates = useCallback(async () => {
         setLoading(true);
@@ -44,7 +44,10 @@ const CandidatesList = () => {
 
     const handleVote = useCallback(
         async (candidateId) => {
-            setVoting(true);
+            setVotingStatus((prevStatus) => ({
+                ...prevStatus,
+                [candidateId]: true,
+            }));
             try {
                 await castVote(candidateId);
                 await refreshCandidates();
@@ -53,13 +56,15 @@ const CandidatesList = () => {
                     content: 'Vote cast successfully',
                 });
             } catch (err) {
-                console.log(err);
                 setMessage({
                     type: 'error',
                     content: err.error.message || 'Failed to cast vote.',
                 });
             } finally {
-                setVoting(false);
+                setVotingStatus((prevStatus) => ({
+                    ...prevStatus,
+                    [candidateId]: false,
+                }));
             }
         },
         [castVote, refreshCandidates, setMessage]
@@ -84,9 +89,9 @@ const CandidatesList = () => {
                             </VoteCount>
                             <VoteButton
                                 onClick={() => handleVote(index)}
-                                disabled={voting}
+                                disabled={votingStatus[index]}
                             >
-                                {voting ? 'Voting...' : 'Vote'}
+                                {votingStatus[index] ? 'Voting...' : 'Vote'}
                             </VoteButton>
                         </CandidateCard>
                     ))}
